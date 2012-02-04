@@ -1,0 +1,15 @@
+.DS_Store
+.checkstyle
+.classpath
+.fbprefs
+.pmd
+.project
+.ruleset
+.metadata/
+.settings/
+.springBeans
+RemoteSystemsTempFiles/
+target/
+test-output/
+classes/
+jsp/
