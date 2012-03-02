@@ -1,7 +1,5 @@
 package com.projectFM.app;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.Action;
@@ -12,6 +10,8 @@ import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
 
 public class UploadPanel extends TransparentPanel {
+    private static final long serialVersionUID = 5939604588914091807L;
+
     JButton btn;
 
     public UploadPanel() {
@@ -37,11 +37,6 @@ public class UploadPanel extends TransparentPanel {
         this.btn = new JButton("goto login");
         this.add(this.btn);
 
-        this.btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.switchPanel("login", (TransparentPanel) getParent());
-            }
-        });
     }
 
 }

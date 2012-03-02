@@ -1,8 +1,6 @@
 package com.projectFM.app;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -35,10 +33,5 @@ public class LoginPanel extends TransparentPanel {
         this.btn = new JButton("goto upload");
         this.add(this.btn);
 
-        this.btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.switchPanel("upload", (TransparentPanel) getParent());
-            }
-        });
     }
 }

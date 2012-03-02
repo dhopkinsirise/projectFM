@@ -3,6 +3,8 @@ package com.projectFM.app;
 import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,17 +16,44 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 public class App {
-    TransparentPanel switchable;
+    private JFrame appFrame;
+    private TransparentPanel switchablePanel;
+    private LoginPanel loginPanel;
+    private UploadPanel uploadPanel;
 
-    public static void main(String[] args) {
-        final JFrame appWindow = initAppWindow();
-        appWindow.setVisible(true);
+    public App() {
+        initComponents();
+        initAppFrame();
+        this.appFrame.setVisible(true);
     }
 
-    private static JFrame initAppWindow() {
-        final JFrame appFrame = new JFrame();
-        appFrame.setTitle(StringConstants.PROJECT_TITLE);
-        appFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+    private void initComponents() {
+        this.appFrame = new JFrame();
+        this.switchablePanel = new TransparentPanel();
+        this.loginPanel = new LoginPanel();
+        this.uploadPanel = new UploadPanel();
+
+        this.uploadPanel.btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switchPanel("login");
+            }
+        });
+        this.loginPanel.btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switchPanel("upload");
+            }
+        });
+
+        this.switchablePanel.setLayout(new CardLayout());
+        this.switchablePanel.add(this.loginPanel, "login");
+        this.switchablePanel.add(this.uploadPanel, "upload");
+        switchPanel("login");
+    }
+
+    private void initAppFrame() {
+
+        this.appFrame.setTitle(StringConstants.PROJECT_TITLE);
+        this.appFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 
         URL imgURL = null;
         Image img = null;
@@ -40,26 +69,21 @@ public class App {
             e.printStackTrace();
         }
         final JPanel contentPane = new BackgroundPanel(img, BackgroundPanel.TILED);
-        appFrame.setContentPane(contentPane);
+
+        this.appFrame.setContentPane(contentPane);
         contentPane.setLayout(new MigLayout("ins 0, fill, debug", "[]", "[][grow][]"));
+
         contentPane.add(new HeaderPanel(), "wrap, growx");
-        final TransparentPanel switchable = new TransparentPanel(); // This has the replaceable coloured panels as added components
-        switchable.setLayout(new CardLayout());
-        switchable.add(new LoginPanel(), "login");
-        switchable.add(new UploadPanel(), "upload");
-        /* final CardLayout manager = (CardLayout) switchable.getLayout();
-        manager.show(switchable, "login");*/
-        switchPanel("login", switchable);
-        contentPane.add(switchable, "grow, center, wrap");
+        contentPane.add(this.switchablePanel, "grow, center, wrap");
         contentPane.add(new FooterPanel(), "growx");
-        appFrame.validate();
-        appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.appFrame.validate();
+        this.appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        return appFrame;
     }
 
-    public static void switchPanel(String nextPanel, TransparentPanel switchable) {
-        final CardLayout manager = (CardLayout) switchable.getLayout(); // Fetch the layout manager
-        manager.show(switchable, nextPanel); // and tell the manager to show the named card        
+    public void switchPanel(String nextPanel) {
+        final CardLayout manager = (CardLayout) this.switchablePanel.getLayout(); // Fetch the layout manager
+        manager.show(this.switchablePanel, nextPanel); // and tell the manager to show the named card        
     }
+
 }
